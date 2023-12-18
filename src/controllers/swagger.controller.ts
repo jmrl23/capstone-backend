@@ -17,6 +17,10 @@ export const controller = Router();
           url: 'http://localhost:3001',
           description: 'Local development',
         },
+        {
+          url: 'https://capstone-backend-5d7p.onrender.com',
+          description: 'Render',
+        },
       ],
       components: {},
       tags: [{ name: 'user' }, { name: 'device' }],
