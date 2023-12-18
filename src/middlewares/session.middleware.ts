@@ -1,10 +1,24 @@
-import expressSession from 'express-session';
-import env from 'env-var';
 import { vendors, wrapper } from '@jmrl23/express-helper';
 import { UserService } from '../services/user.service';
+import expressSession from 'express-session';
+import env from 'env-var';
+import RedisStore from 'connect-redis';
+import { createClient } from 'redis';
+
+const redisClient = createClient({
+  url: env.get('REDIS_URL').default('redis://').asString(),
+});
+
+redisClient.connect().catch(console.error);
+
+const redisStore = new RedisStore({
+  client: redisClient,
+  prefix: 'session:',
+});
 
 export const sessionMiddleware = expressSession({
   secret: env.get('SESSION_SECRET').default('').asString(),
+  store: redisStore,
   resave: false,
   saveUninitialized: true,
   cookie: {
