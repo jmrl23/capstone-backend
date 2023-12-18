@@ -80,7 +80,7 @@ export class UserService {
   ): Promise<Express.User> {
     const conflict = await this.prismaClient.userAuth.findUnique({
       where: {
-        username,
+        username: username.toLowerCase(),
       },
     });
 
@@ -92,7 +92,7 @@ export class UserService {
       data: {
         UserAuth: {
           create: {
-            username,
+            username: username.toLowerCase(),
             password: await PasswordService.hash(password),
           },
         },
@@ -127,7 +127,7 @@ export class UserService {
   ): Promise<Express.User> {
     const userAuth = await this.prismaClient.userAuth.findUnique({
       where: {
-        username,
+        username: username.toLowerCase(),
       },
       include: {
         User: {

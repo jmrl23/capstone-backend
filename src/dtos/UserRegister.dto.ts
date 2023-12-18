@@ -3,9 +3,6 @@ import { vendors } from '@jmrl23/express-helper';
 export class UserRegisterDto {
   @vendors.classValidator.IsString()
   @vendors.classValidator.IsNotEmpty()
-  @vendors.classTransformer.Transform(({ value }: { value: string }) =>
-    value.toLowerCase(),
-  )
   @vendors.classValidator.Matches('^[a-z0-9_]{4,}[0-9]*$', void 0, {
     message: 'Invalid username',
   })
