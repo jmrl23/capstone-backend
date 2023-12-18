@@ -2,6 +2,7 @@
 // example: A_TEST
 
 // prefix meanings:
+// B = both
 // I = iot
 // A = app
 export enum TOPICS {
@@ -10,6 +11,9 @@ export enum TOPICS {
 
   // pressing the ring button on application
   A_RING = 'A_RING',
+
+  // trigger sync on both iot and application
+  B_SYNC = 'B_SYNC',
 
   // syncing data on iot
   // format:  r

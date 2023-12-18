@@ -55,6 +55,8 @@ export async function ws(httpServer: HttpServer) {
       const message = payload.toString();
       const device = await deviceService.getDeviceByKey(key);
 
+      if (!device) return;
+
       switch (topic) {
         case TOPICS.I_PRESS: {
           await deviceService.addDeviceDataPress(device.id);

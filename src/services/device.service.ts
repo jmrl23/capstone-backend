@@ -150,7 +150,7 @@ export class DeviceService {
     return device;
   }
 
-  public async getDeviceByKey(key: string): Promise<GDevice> {
+  public async getDeviceByKey(key: string): Promise<GDevice | null> {
     const cacheKey = `device:key:${key}`;
     const deviceId = await this.cacheService.get<string>(cacheKey);
 
@@ -167,11 +167,11 @@ export class DeviceService {
       },
     });
 
-    if (device) {
-      await this.cacheService.set(cacheKey, device.id);
-    }
+    if (!device) return null;
 
-    return await this.getDeviceById(device!.id);
+    await this.cacheService.set(cacheKey, device.id);
+
+    return await this.getDeviceById(device.id);
   }
 
   public async getDevicesByUserId(userId: string): Promise<GDevice[]> {
