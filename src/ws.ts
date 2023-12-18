@@ -58,6 +58,15 @@ export async function ws(httpServer: HttpServer) {
       if (!device) return;
 
       switch (topic) {
+        case TOPICS.B_SYNC: {
+          mqtt.publish(`${TOPICS.A_SYNC}:${key}`, '');
+          mqtt.publish(
+            `${TOPICS.I_SYNC}:${key}`,
+            device.DeviceData.isRinging ? '1' : '0',
+          );
+          break;
+        }
+
         case TOPICS.I_PRESS: {
           await deviceService.addDeviceDataPress(device.id);
           mqtt.publish(`${TOPICS.A_SYNC}:${key}`, '');
