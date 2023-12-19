@@ -1,7 +1,6 @@
 import { type Server as HttpServer } from 'node:http';
 import { Server as SocketIoServer } from 'socket.io';
 import { client as mqtt } from './mqtt';
-import { sessionMiddleware } from './middlewares/session.middleware';
 import { UserService } from './services/user.service';
 import { DeviceService } from './services/device.service';
 import { TOPICS } from './utils/constants';
@@ -12,17 +11,14 @@ export async function ws(httpServer: HttpServer) {
     serveClient: false,
     cors: {
       origin: env.get('CORS_ORIGIN').asString(),
-      credentials: true,
     },
   });
   const userService = await UserService.getInstance();
   const deviceService = await DeviceService.getInstance();
 
-  io.engine.use(sessionMiddleware);
-
   io.on('connection', async function (socket) {
-    const request = socket.request as unknown as Express.Request;
-    const user = await userService.getUserById(request.session.userId ?? '');
+    const userId = socket.handshake.auth.userId;
+    const user = await userService.getUserById(userId);
 
     if (!user) {
       socket.disconnect(true);
