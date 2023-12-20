@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { UserService } from '../services/user.service';
-import { validate, wrapper } from '@jmrl23/express-helper';
+import { validate, vendors, wrapper } from '@jmrl23/express-helper';
 import { saveSession } from '../utils/session';
 import { UserRegisterDto } from '../dtos/UserRegister.dto';
 import { UserLoginDto } from '../dtos/UserLogin.dto';
@@ -210,11 +210,12 @@ export const controller = Router();
       '/logout',
       sessionRequired,
       wrapper(async function (request) {
-        delete request.session.userId;
-
-        await saveSession(request.session);
-
-        return { success: true };
+        return new Promise<{ success: boolean }>((resolve) => {
+          request.session.destroy((error) => {
+            if (!error) return resolve({ success: true });
+            throw new vendors.httpErrors.BadRequest();
+          });
+        });
       }),
     );
 })();

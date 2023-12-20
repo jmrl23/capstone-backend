@@ -5,12 +5,19 @@ import { UserService } from './services/user.service';
 import { DeviceService } from './services/device.service';
 import { TOPICS } from './utils/constants';
 import { default as env } from 'env-var';
+import { vendors } from '@jmrl23/express-helper';
 
 export async function ws(httpServer: HttpServer) {
   const io = new SocketIoServer(httpServer, {
     serveClient: false,
     cors: {
-      origin: env.get('CORS_ORIGIN').asString(),
+      origin: (origin, next) => {
+        const origins = env.get('CORS_ORIGIN').asArray();
+        if (!origin) return next(null);
+        if (!origins?.includes(origin))
+          return next(new vendors.httpErrors.Unauthorized('Blocked by CORS'));
+        next(null, origin);
+      },
     },
   });
   const userService = await UserService.getInstance();
