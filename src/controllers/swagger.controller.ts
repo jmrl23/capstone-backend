@@ -26,8 +26,30 @@ export const controller = Router();
           description: 'Render',
         },
       ],
-      components: {},
-      tags: [{ name: 'user' }, { name: 'device' }],
+      // HAX:
+      // Giving the option to test the apis through our HAX (:
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+          },
+        },
+      },
+      // ----
+      tags: [
+        {
+          name: 'user',
+        },
+        {
+          name: 'device',
+        },
+      ],
     },
     apis: ['./src/controllers/**/*.ts'],
   } satisfies OAS3Options);
