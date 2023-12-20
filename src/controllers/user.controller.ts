@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { UserService } from '../services/user.service';
-import { validate, vendors, wrapper } from '@jmrl23/express-helper';
+import { validate, wrapper } from '@jmrl23/express-helper';
 import { saveSession } from '../utils/session';
 import { UserRegisterDto } from '../dtos/UserRegister.dto';
 import { UserLoginDto } from '../dtos/UserLogin.dto';
@@ -210,12 +210,17 @@ export const controller = Router();
       '/logout',
       sessionRequired,
       wrapper(async function (request) {
-        return new Promise<{ success: boolean }>((resolve) => {
-          request.session.destroy((error) => {
-            if (!error) return resolve({ success: true });
-            throw new vendors.httpErrors.BadRequest();
-          });
-        });
+        request.sessionStore.destroy(request.sessionID);
+
+        // HAX:
+        // This is still part of th "HAX"
+        const [, sessionId] = request.header('Authorization')?.split(' ') ?? [];
+        if (sessionId) request.sessionStore.destroy(sessionId);
+        // ----
+
+        return {
+          success: true,
+        };
       }),
     );
 })();
