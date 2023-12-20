@@ -62,6 +62,8 @@ export class DeviceService {
         },
       });
 
+      await this.cacheService.del(`device:list:${userId}`);
+
       return await this.getDeviceById(existingDevice.id, true);
     }
 
