@@ -27,7 +27,13 @@ app.disable('x-powered-by');
 app.use(
   morganMiddleware(),
   corsMiddleware({
-    origin: env.get('CORS_ORIGIN').default('*').asString(),
+    origin: (origin, next) => {
+      const origins = env.get('CORS_ORIGIN').asArray();
+      if (!origin) return next(null);
+      if (!origins?.includes(origin))
+        return next(new vendors.httpErrors.Unauthorized('Blocked by CORS'));
+      next(null, origin);
+    },
     credentials: true,
   }),
   express.json({
