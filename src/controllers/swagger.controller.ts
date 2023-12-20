@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { serve, setup } from 'swagger-ui-express';
 import { default as swaggerJsDoc, type OAS3Options } from 'swagger-jsdoc';
+import { default as env } from 'env-var';
 
 export const controller = Router();
 
@@ -18,7 +19,10 @@ export const controller = Router();
           description: 'Local development',
         },
         {
-          url: 'https://capstone-backend-5d7p.onrender.com',
+          url: env
+            .get('RENDER_URL')
+            .default('https://example.onrender.com')
+            .asString(),
           description: 'Render',
         },
       ],
