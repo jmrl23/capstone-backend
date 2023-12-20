@@ -213,7 +213,7 @@ export const controller = Router();
         request.sessionStore.destroy(request.sessionID);
 
         // HAX:
-        // This is still part of th "HAX"
+        // This is still part of the "HAX"
         const [scheme, sessionId] =
           request.header('Authorization')?.split(' ') ?? [];
         if (scheme === 'Bearer' && sessionId)
