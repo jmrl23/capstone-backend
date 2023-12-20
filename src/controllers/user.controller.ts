@@ -214,8 +214,10 @@ export const controller = Router();
 
         // HAX:
         // This is still part of th "HAX"
-        const [, sessionId] = request.header('Authorization')?.split(' ') ?? [];
-        if (sessionId) request.sessionStore.destroy(sessionId);
+        const [scheme, sessionId] =
+          request.header('Authorization')?.split(' ') ?? [];
+        if (scheme === 'Bearer' && sessionId)
+          request.sessionStore.destroy(sessionId);
         // ----
 
         return {
