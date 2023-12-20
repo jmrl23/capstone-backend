@@ -16,16 +16,18 @@ const redisStore = new RedisStore({
   prefix: 'session:',
 });
 
+const nodeEnv = env.get('NODE_ENV').default('development').asString();
+
 export const sessionMiddleware = expressSession({
   secret: env.get('SESSION_SECRET').default('').asString(),
   store: redisStore,
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure:
-      env.get('NODE_ENV').default('development').asString() === 'production',
+    secure: nodeEnv === 'production',
     path: '/',
     httpOnly: true,
+    sameSite: nodeEnv === 'production' ? 'none' : 'lax',
   },
 });
 
