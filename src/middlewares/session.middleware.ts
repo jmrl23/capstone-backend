@@ -20,6 +20,7 @@ const isProduction =
   env.get('NODE_ENV').default('development').asString() === 'production';
 
 export const sessionMiddleware = expressSession({
+  name: 'c.id',
   secret: env.get('SESSION_SECRET').default('').asString(),
   store: redisStore,
   resave: false,

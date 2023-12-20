@@ -22,6 +22,7 @@ export const app = express();
 
 // configurations
 app.disable('x-powered-by');
+app.set('trust proxy', 1);
 
 // middlewares
 app.use(
