@@ -24,6 +24,9 @@ export const sessionMiddleware = expressSession({
   cookie: {
     secure:
       env.get('NODE_ENV').default('development').asString() === 'production',
+    path: '/',
+    httpOnly: true,
+    domain: env.get('COOKIE_DOMAIN').default('localhost').asString(),
   },
 });
 
