@@ -133,7 +133,7 @@ export const controller = Router();
         await saveSession(request.session);
 
         return {
-          user,
+          cid: request.sessionID,
         };
       }),
     )

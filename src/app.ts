@@ -17,6 +17,7 @@ import {
 } from './middlewares/session.middleware';
 import { Prisma } from '@prisma/client';
 import { prismaError as PrismaError } from 'prisma-better-errors';
+import { sessionReuseMiddleware } from './middlewares/session-reuse.middleware';
 
 export const app = express();
 
@@ -44,6 +45,7 @@ app.use(
     extended: true,
   }),
   sessionMiddleware,
+  sessionReuseMiddleware,
   bindUserSessionMiddleware,
 );
 
