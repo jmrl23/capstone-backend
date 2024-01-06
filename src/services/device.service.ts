@@ -242,4 +242,32 @@ export class DeviceService {
 
     return await this.getDeviceById(device.id, true);
   }
+
+  public async getPressList(
+    id: string,
+    createdAtFrom?: string,
+    createdAtTo?: string,
+  ): Promise<GDeviceDataPress[]> {
+    const devicePresses = await this.prismaClient.deviceDataPress.findMany({
+      where: {
+        createdAt: {
+          gte: createdAtFrom,
+          lte: createdAtTo,
+        },
+        DeviceData: {
+          Device: {
+            some: {
+              id,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+        createdAt: true,
+      },
+    });
+
+    return devicePresses;
+  }
 }

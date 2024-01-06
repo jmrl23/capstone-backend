@@ -34,6 +34,14 @@ export declare global {
       };
     }> {}
 
+  export interface GDeviceDataPress
+    extends Prisma.DeviceDataPressGetPayload<{
+      select: {
+        id;
+        createdAt;
+      };
+    }> {}
+
   declare namespace Express {
     export interface Request {
       user?: User | null;

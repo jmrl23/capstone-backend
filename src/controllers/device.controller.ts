@@ -4,6 +4,7 @@ import { DeviceRegisterDto } from '../dtos/DeviceRegister.dto';
 import { validate, wrapper } from '@jmrl23/express-helper';
 import { DeviceService } from '../services/device.service';
 import { ParamIdDto } from '../dtos/ParamId.dto';
+import { DeviceGetDataPressDto } from '../dtos/DeviceGetDataPress.dto';
 
 export const controller = Router();
 
@@ -117,6 +118,55 @@ export const controller = Router();
 
         return {
           devices,
+        };
+      }),
+    )
+
+    /**
+     * @openapi
+     *
+     * /device/press-list:
+     *  post:
+     *    tags:
+     *      - device
+     *    summary: get list of device presses
+     *    requestBody:
+     *      content:
+     *        application/json:
+     *          schema:
+     *            type: object
+     *            properties:
+     *              device_id:
+     *                type: string
+     *                format: uuid
+     *                required: true
+     *              created_at_from:
+     *                type: string
+     *                format: date-time
+     *              created_at_to:
+     *                type: string
+     *                format: date-time
+     *    responses:
+     *      '200':
+     *        description: Successful response
+     *        content:
+     *          application/json: {}
+     */
+
+    .post(
+      '/press-list',
+      validate('BODY', DeviceGetDataPressDto),
+      wrapper(async function (request) {
+        const { device_id, created_at_from, created_at_to } =
+          request.body as DeviceGetDataPressDto;
+        const presses = await deviceService.getPressList(
+          device_id,
+          created_at_from,
+          created_at_to,
+        );
+
+        return {
+          list: presses,
         };
       }),
     );
