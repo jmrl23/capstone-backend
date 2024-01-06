@@ -4,6 +4,7 @@ import { PrismaService } from './prisma.service';
 import { caching } from 'cache-manager';
 import { default as ms } from 'ms';
 import { vendors } from '@jmrl23/express-helper';
+import { subMonths } from 'date-fns';
 
 export class DeviceService {
   private static instance: DeviceService;
@@ -117,10 +118,10 @@ export class DeviceService {
 
     if (cache) return cache;
 
-    const lastFiveMonths = new Date();
+    const now = new Date();
+    const createdFromAt = subMonths(now, 4);
 
-    lastFiveMonths.setMonth(lastFiveMonths.getMonth() - 5);
-    lastFiveMonths.setDate(1);
+    createdFromAt.setDate(1);
 
     const device = await this.prismaClient.device.findUnique({
       where: {
@@ -133,7 +134,8 @@ export class DeviceService {
             DeviceDataPress: {
               where: {
                 createdAt: {
-                  gte: lastFiveMonths,
+                  lte: now,
+                  gte: createdFromAt,
                 },
               },
               select: {

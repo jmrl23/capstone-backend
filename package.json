@@ -17,6 +17,7 @@
     "colorette": "^2.0.20",
     "connect-redis": "^7.1.0",
     "cors": "^2.8.5",
+    "date-fns": "^3.1.0",
     "detect-port": "^1.5.1",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.3.0",
