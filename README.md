@@ -1,8 +1,8 @@
 # Backend
 
-Capstone backend
+Backend server that communicates with the IoT using mqtt protocol and websocket for application(s)
 
-[![Express](https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png)](https://expressjs.com/)
+![Banner](https://media.giphy.com/media/HzPtbOKyBoBFsK4hyc/giphy.gif)
 
 ## Installation
 
