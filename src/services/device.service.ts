@@ -139,6 +139,9 @@ export class DeviceService {
               select: {
                 createdAt: true,
               },
+              orderBy: {
+                createdAt: 'asc',
+              },
             },
           },
         },
@@ -265,6 +268,9 @@ export class DeviceService {
       select: {
         id: true,
         createdAt: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
       },
     });
 
