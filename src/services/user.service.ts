@@ -179,6 +179,10 @@ export class UserService {
 
       if (await PasswordService.compare(oldPassword, user.UserAuth.password)) {
         _password = await PasswordService.hash(password);
+      } else {
+        throw new vendors.httpErrors.Unauthorized(
+          'Current password is incorrect',
+        );
       }
     }
 
